@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+    <script type="text/javascript" src="/js/common.js" async></script>
+    <script type="text/javascript" src="/js/dashboard.js" async></script>
+    <script type="text/javascript" src="/js/nav.js" async></script>
+</head>
+<body onload="init()">
+    <div class="container">
+        <div class="row" id="header_container"></div>
+        <h1 style="text-align: center" th:text="${msg}"></h1>
+        <div class="row">
+            <div class="col-30">
+                <div style="background-color: #34A6A8;text-align: center" class="container">
+                    <h2>Total Employee Processed</h2>
+                    <h3 th:text="${totalProcessedEmployee}"></h3>
+                </div>
+            </div>
+            <div class="col-5">
+            </div>
+            <div class="col-30">
+                <div style="background-color: #C87253;text-align: center" class="container">
+                    <h2>Last Process Run</h2>
+                    <h3 th:text="${lastRun}"></h3>
+                </div>
+            </div>
+            <div class="col-5"></div>
+            <div class="col-30">
+                <div style="background-color: blueviolet;text-align: center" class="container">
+                    <h2>Total Process Run</h2>
+                    <h3 th:text="${totalRun}"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row"><label></label></div>
+        <div class="row" id="footer_container"></div>
+    </div>
+
+</body>
+</html>

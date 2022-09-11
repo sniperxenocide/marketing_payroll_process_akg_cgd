@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+    <script type="text/javascript" src="/js/common.js" async></script>
+    <script type="text/javascript" src="/js/process.js" async></script>
+    <script type="text/javascript" src="/js/nav.js" async></script>
+</head>
+<body onload="init()">
+    <div class="container">
+        <div class="row" id="header_container"></div>
+        <div th:unless="${process.status}">
+            <h2 style="text-align: center">Run Salary Process</h2>
+            <div class="row">
+                <form th:action="'/process/start'" th:object="${process}" method="post">
+                    <div class="row">
+                        <div class="col-25"></div>
+                        <div class="col-20">
+                            <label><b>Select Period</b></label>
+                            <select th:field="*{period}" required>
+                                <option value="">-SELECT OPTION-</option>
+                                <option th:each="p:${periods}" th:value="${p.id}" th:text="${p.description}"></option>
+                            </select>
+                        </div>
+                        <div class="col-10"></div>
+                        <div class="col-20">
+                            <label><b>Select Mode</b></label>
+                            <select th:field="*{processMode}" required>
+                                <option th:each="mode:${processModes}" th:value="${mode}" th:text="${mode}"></option>
+                            </select>
+                        </div>
+                        <div class="col-25"></div>
+                    </div>
+                    <label></label>
+                    <div class="row">
+                        <div class="col-40"></div>
+                        <div class="col-20">
+                            <button type="submit" ><b>Run</b></button>
+                        </div>
+                        <div class="col-40"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${process.status} and ${process.status.name()}=='RUNNING'" >
+            <h2 style="text-align: center">Running Process</h2>
+            <div class="row">
+                <div class="col-20"></div>
+                <div class="col-10"><label><b>Process Id :</b></label></div>
+                <div class="col-5"><label th:text="${process.id}"></label></div>
+                <div class="col-10"><label><b>Period:</b></label></div>
+                <div class="col-15"><label th:text="${process.period.description}"></label></div>
+                <div class="col-10"><label><b>Process Mode :</b></label></div>
+                <div class="col-10"><label th:text="${process.processMode}"></label></div>
+                <div class="col-20"></div>
+            </div>
+            <div class="row">
+                <div class="col-10"></div>
+                <div class="col-10"><label><b>Start Time :</b></label></div>
+                <div class="col-20"><label th:text="${process.processStartTime}"></label></div>
+                <div class="col-15"><label><b>Total Employee :</b></label></div>
+                <div class="col-10"><label th:text="${process.totalEmployee}"></label></div>
+                <div class="col-15"><label><b>Processed Employee :</b></label></div>
+                <div class="col-10"><label id="processed_employee" th:text="${process.processedEmployee}"></label></div>
+                <div class="col-10"></div>
+            </div>
+            <div class="row">
+                <div class="col-10"></div>
+                <div class="col-80">
+                    <div style="background-color: #4E6161; border-radius: 5px;padding: 2px">
+                        <div id="progress_bar" style="width: 0.0%;height: 10px;
+                             border-radius: 4px;background-color: #009879"></div>
+                    </div>
+                </div>
+                <div class="col-10"></div>
+            </div>
+            <div class="row">
+                <div class="col-20"></div>
+                <div class="col-10"><label><b>Time Passed :</b></label></div>
+                <div class="col-10"><label id="time_passed"></label></div>
+                <div class="col-10"><label><b>Progress :</b></label></div>
+                <div class="col-10"><label id="progress"></label></div>
+                <div class="col-10"><label><b>Time Left :</b></label></div>
+                <div class="col-10"><label id="time_left"></label></div>
+                <div class="col-20"></div>
+            </div>
+            <label></label>
+            <div class="row">
+                <div class="col-40"></div>
+                <form th:action="@{/process/stop(id=${process.id})}" method="post">
+                    <div class="col-20"><button type="submit"><b>Stop</b></button></div>
+                </form>
+                <div class="col-40"></div>
+            </div>
+        </div>
+
+        <div class="row"><label></label></div>
+        <div class="row">
+            <h2 style="text-align: center">Salary Process History</h2>
+            <div class="row">
+                <div style="max-height:500px;overflow-y: auto">
+                    <table class="styled-table">
+                        <thead>
+                        <tr>
+                            <th>SL</th><th>Process ID</th><th>Salary Period</th><th>Start Time</th>
+                            <th>End Time</th><th>Process Mode</th>
+                            <th>Total Employee</th><th>Processed Employee</th>
+                            <th>Process Status</th><th>Run By</th><th>Detail</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${processes.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                        <tr th:each="p,stat : ${processes}">
+                            <td th:text="${stat.index+1}"></td>
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.period.description}"></td>
+                            <td th:text="${p.processStartTime}"></td>
+                            <td th:text="${p.processEndTime}"></td>
+                            <td th:text="${p.processMode}"></td>
+                            <td th:text="${p.totalEmployee}"></td>
+                            <td th:text="${p.processedEmployee}"></td>
+                            <td th:style="'background-color:'+ (${p.status.name()} == 'RUNNING' ?
+                                    'coral':'#009879') " th:text="${p.status}"></td>
+                            <td th:text="${p.runBy.username}"></td>
+                            <td><a th:if="${p.status.name()} == 'COMPLETED'"
+                                th:href="@{/salary(processId=${p.id})}">View</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row"><label></label></div>
+        <div class="row" id="footer_container"></div>
+    </div>
+</body>
+</html>

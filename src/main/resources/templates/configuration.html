@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuration</title>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+    <script type="text/javascript" src="/js/common.js" async></script>
+    <script type="text/javascript" src="/js/configuration.js" async></script>
+    <script type="text/javascript" src="/js/nav.js" async></script>
+</head>
+<body onload="init()">
+    <div class="container">
+        <div class="row" id="header_container"></div>
+        <div class="row">
+            <div class="col-55">
+                <h3 style="text-align: center">Avg Sales Wise Grade Salary</h3>
+                <div class="row">
+                    <div style="max-height:500px;overflow-y: auto">
+                        <table class="styled-table">
+                            <thead>
+                            <tr>
+                                <th>SL</th><th>Designation</th><th>Division Group</th>
+                                <th>Grade</th><th>Min Sales</th>
+                                <th>Max Sales</th><th>Salary</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${salesConfig.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                            <tr th:each="cnf,stat : ${salesConfig}">
+                                <td th:text="${stat.index+1}"></td>
+                                <td th:text="${cnf.designation.name}"></td>
+                                <td th:text="${cnf.group.name}"></td>
+                                <td th:text="${cnf.grade.name}"></td>
+                                <td th:text="${cnf.minSales}"></td>
+                                <td th:text="${cnf.maxSales}"></td>
+                                <td th:text="${cnf.basicSalary}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5"></div>
+            <div class="col-40">
+                <h3 style="text-align: center">Marketing Nodes</h3>
+                <div class="row">
+                    <div style="max-height:500px;overflow-y: auto">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>SL</th><th>Group</th><th>Division</th>
+                                    <th>Parent Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${nodes.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                            <tr th:each="node,stat : ${nodes}">
+                                <td th:text="${stat.index+1}"></td>
+                                <td th:text="${node.group.name}"></td>
+                                <td th:text="${node.nodeName}"></td>
+                                <td th:text="${node.parentNodeName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row"><label></label></div>
+        <div class="row">
+            <div class="col-25">
+                <h3 style="text-align: center">Salary Grades</h3>
+                <div class="row">
+                    <div style="max-height:500px;overflow-y: auto">
+                        <table class="styled-table">
+                            <thead>
+                            <tr>
+                                <th>SL</th><th>Grade</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${grades.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                            <tr th:each="grade,stat : ${grades}">
+                                <td th:text="${stat.index+1}"></td>
+                                <td th:text="${grade.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5"></div>
+            <div class="col-40">
+                <h3 style="text-align: center">Employee Designations</h3>
+                <div class="row">
+                    <div style="max-height:500px;overflow-y: auto">
+                        <table class="styled-table">
+                            <thead>
+                            <tr>
+                                <th>SL</th><th>Designation ID (MIS)</th>
+                                <th>Designation Name</th><th>Active</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${designations.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                            <tr th:each="designation,stat : ${designations}">
+                                <td th:text="${stat.index+1}"></td>
+                                <td th:text="${designation.misId}"></td>
+                                <td th:text="${designation.name}"></td>
+                                <td th:text="${designation.active}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5"></div>
+            <div class="col-25">
+                <h3 style="text-align: center">Salary Periods</h3>
+                <div class="row">
+                    <div style="max-height:500px;overflow-y: auto">
+                        <table class="styled-table">
+                            <thead>
+                            <tr>
+                                <th>SL</th><th>Period Name</th><th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${periods.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                                <tr th:each="period,stat : ${periods}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${period.description}"></td>
+                                    <td th:style="'background-color:'+ (${period.status.name()} == 'OPEN' ?
+                                        '#009879':'coral') " th:text="${period.status}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row"><label></label></div>
+        <div class="row" id="footer_container"></div>
+    </div>
+</body>
+</html>

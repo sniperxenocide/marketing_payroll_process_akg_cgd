@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+    <script type="text/javascript" src="/js/lib/sheetjs.js" async></script>
+    <script type="text/javascript" src="/js/lib/FileSaver.js" async></script>
+    <script type="text/javascript" src="/js/common.js" async></script>
+    <script type="text/javascript" src="/js/salary.js" async></script>
+    <script type="text/javascript" src="/js/nav.js" async></script>
+</head>
+<body onload="init()">
+    <div class="container">
+        <div class="row" id="header_container"></div>
+        <h2 style="text-align: center">Employee Processed Salary</h2>
+        <div class="row">
+            <div class="col-20"></div>
+            <div class="col-10"><label><b>Process Id :</b></label></div>
+            <div class="col-5"><label th:text="${process.id}"></label></div>
+            <div class="col-10"><label><b>Period:</b></label></div>
+            <div class="col-15"><label th:text="${process.period.description}"></label></div>
+            <div class="col-10"><label><b>Process Mode :</b></label></div>
+            <div class="col-10"><label th:text="${process.processMode}"></label></div>
+            <div class="col-20"></div>
+        </div>
+        <div class="row">
+            <div class="col-25"></div>
+            <div class="col-10"><label><b>Start Time :</b></label></div>
+            <div class="col-15"><label th:text="${process.processStartTime}"></label></div>
+            <div class="col-10"><label><b>End Time :</b></label></div>
+            <div class="col-15"><label th:text="${process.processEndTime}"></label></div>
+            <div class="col-25"></div>
+        </div>
+        <div class="row">
+            <div class="col-20"><label th:text="'Row Count: '+${salary.size()}"></label></div>
+            <div class="col-60"></div>
+            <div class="col-20">
+                <button onclick="exportToExcel('salary_detail_table')" ><b>Export to Excel</b></button>
+            </div>
+        </div>
+        <div class="row">
+            <div style="max-height:500px;overflow-y: auto">
+                <table id="salary_detail_table" class="styled-table">
+                    <thead>
+                    <tr>
+                        <th>SL</th><th>Employee Id</th><th>Name</th><th>Oracle Code</th>
+                        <th>Joining Date</th><th>Designation</th><th>Marketing Node</th>
+                        <th>Node Group</th><th>Total Sales</th>
+                        <th>Sales Days</th><th>Average Sales</th><th>Grade</th>
+                        <th>Basic Salary</th><th>Payable Days</th><th>Payable Salary</th>
+                        <th>Comment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${salary.isEmpty()}"><td colspan="2">No Data Found</td></tr>
+                    <tr th:each="s,stat : ${salary}">
+                        <td th:text="${stat.index+1}"></td>
+                        <td th:text="${s.employeeId}"></td>
+                        <td th:text="${s.employeeName}"></td>
+                        <td th:text="${s.oracleCode}"></td>
+                        <td th:text="${s.joiningDate}"></td>
+                        <td th:text="${s.designation}"></td>
+                        <td th:text="${s.marketingNodeName}"></td>
+                        <td th:text="${s.nodeGroup}"></td>
+                        <td th:text="${s.totalSales}"></td>
+                        <td th:text="${s.validSalesDays}"></td>
+                        <td th:text="${s.averageSales}"></td>
+                        <td th:text="${s.grade}"></td>
+                        <td th:text="${s.basicSalary}"></td>
+                        <td th:text="${s.payableDays}"></td>
+                        <td th:text="${s.payableSalary}"></td>
+                        <td th:text="${s.comment}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row"><label></label></div>
+        <div class="row" id="footer_container"></div>
+    </div>
+</body>
+</html>
